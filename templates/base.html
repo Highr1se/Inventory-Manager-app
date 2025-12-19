@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title if title else "Inventory Manager" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="mark">IM</span>
+        <span class="brand-text">
+          <span class="brand-title">Inventory Manager</span>
+          <span class="brand-sub">Minimal stock tracking</span>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="{{ url_for('index') }}" class="{{ 'active' if request.path == '/' else '' }}">Dashboard</a>
+        <a href="{{ url_for('page1') }}" class="{{ 'active' if request.path == '/page1' else '' }}">Add</a>
+        <a href="{{ url_for('page2') }}" class="{{ 'active' if request.path == '/page2' else '' }}">Inventory</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>Flask • JSON storage • Inventory Manager</span>
+      <span class="muted">Capstone App</span>
+    </div>
+  </footer>
+</body>
+</html>

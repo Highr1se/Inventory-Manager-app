@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% set title = "Inventory" %}
+{% block content %}
+  <section class="hero compact">
+    <div>
+      <h1>Inventory</h1>
+      <p class="muted">Search, filter, adjust quantities, and delete products.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href="{{ url_for('page1') }}">Add Product</a>
+    </div>
+  </section>
+
+  <div class="card">
+    <form class="filters" method="GET">
+      <input name="q" value="{{ q }}" placeholder="Search by name or SKU..." />
+      <select name="category">
+        <option value="">All categories</option>
+        {% for c in categories %}
+          <option value="{{ c|lower }}" {% if category == c|lower %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+
+      <label class="check">
+        <input type="checkbox" name="low" value="1" {% if low == "1" %}checked{% endif %}>
+        <span>Low stock only</span>
+      </label>
+
+      <button class="btn ghost" type="submit">Apply</button>
+      <a class="btn ghost" href="{{ url_for('page2') }}">Reset</a>
+    </form>
+
+    {% if products %}
+      <div class="table">
+        <div class="row head">
+          <div>Product</div>
+          <div>SKU</div>
+          <div>Category</div>
+          <div>Price</div>
+          <div>Qty</div>
+          <div>Adjust</div>
+          <div>Delete</div>
+        </div>
+
+        {% for p in products %}
+          <div class="row {% if p.quantity <= p.reorder_level %}warn{% endif %}">
+            <div class="strong">{{ p.name }}</div>
+            <div class="muted">{{ p.sku }}</div>
+            <div class="muted">{{ p.category }}</div>
+            <div>${{ "%.2f"|format(p.price) }}</div>
+            <div>
+              <span class="qty">{{ p.quantity }}</span>
+              {% if p.quantity <= p.reorder_level %}
+                <span class="badge">Low</span>
+              {% endif %}
+            </div>
+
+            <div>
+              <form method="POST" action="{{ url_for('update', pid=p.id) }}" class="inline">
+                <input name="change" class="small" placeholder="+5 or -2" />
+                <button class="btn tiny" type="submit">Update</button>
+              </form>
+            </div>
+
+            <div>
+              <form method="POST" action="{{ url_for('delete', pid=p.id) }}">
+                <button class="btn tiny danger" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">No products found.</p>
+    {% endif %}
+  </div>
+{% endblock %}

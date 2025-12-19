@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% set title = "Dashboard" %}
+{% block content %}
+  <section class="hero">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="muted">Track products, stock levels, and low-inventory alerts.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href="{{ url_for('page1') }}">Add Product</a>
+      <a class="btn ghost" href="{{ url_for('page2') }}">View Inventory</a>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="card stat">
+      <div class="label">Products</div>
+      <div class="value">{{ total_products }}</div>
+    </div>
+    <div class="card stat">
+      <div class="label">Total Units</div>
+      <div class="value">{{ total_units }}</div>
+    </div>
+    <div class="card stat">
+      <div class="label">Inventory Value</div>
+      <div class="value">${{ "%.2f"|format(inventory_value) }}</div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="card-head">
+        <h2>Low Stock</h2>
+        <span class="pill">{{ low_stock|length }} items</span>
+      </div>
+
+      {% if low_stock %}
+        <div class="table">
+          <div class="row head">
+            <div>Item</div><div>SKU</div><div>Qty</div><div>Reorder</div>
+          </div>
+          {% for p in low_stock %}
+            <div class="row warn">
+              <div class="strong">{{ p.name }}</div>
+              <div class="muted">{{ p.sku }}</div>
+              <div>{{ p.quantity }}</div>
+              <div>{{ p.reorder_level }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">All items are above reorder level.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>Recent Products</h2>
+        <span class="pill">Last {{ recent|length }}</span>
+      </div>
+
+      {% if recent %}
+        <ul class="list">
+          {% for p in recent %}
+            <li class="list-item">
+              <div>
+                <div class="strong">{{ p.name }}</div>
+                <div class="muted">{{ p.category }} • {{ p.sku }}</div>
+              </div>
+              <div class="price">${{ "%.2f"|format(p.price) }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">Add your first product to see it here.</p>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

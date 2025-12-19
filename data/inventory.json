@@ -1,0 +1,22 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Classic T-Shirt",
+      "sku": "TSHIRT-001",
+      "category": "Apparel",
+      "price": 19.99,
+      "quantity": 25,
+      "reorder_level": 10
+    },
+    {
+      "id": 2,
+      "name": "Iced Coffee Cups (16oz)",
+      "sku": "CUP-016",
+      "category": "Supplies",
+      "price": 12.5,
+      "quantity": 8,
+      "reorder_level": 12
+    }
+  ]
+}

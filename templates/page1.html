@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% set title = "Add Product" %}
+{% block content %}
+  <section class="hero compact">
+    <div>
+      <h1>Add Product</h1>
+      <p class="muted">Create a new item with SKU, pricing, and stock thresholds.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn ghost" href="{{ url_for('page2') }}">Inventory</a>
+    </div>
+  </section>
+
+  <div class="card">
+    <form method="POST" class="form">
+      <div class="grid2">
+        <label>
+          <span>Name</span>
+          <input name="name" placeholder="Classic T-Shirt" required />
+        </label>
+
+        <label>
+          <span>SKU</span>
+          <input name="sku" placeholder="TSHIRT-001" required />
+        </label>
+
+        <label>
+          <span>Category</span>
+          <input name="category" placeholder="Apparel" />
+        </label>
+
+        <label>
+          <span>Price</span>
+          <input name="price" placeholder="19.99" required />
+        </label>
+
+        <label>
+          <span>Quantity</span>
+          <input name="quantity" placeholder="25" required />
+        </label>
+
+        <label>
+          <span>Reorder Level</span>
+          <input name="reorder_level" placeholder="10" required />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="submit">Save Product</button>
+        <a class="btn ghost" href="{{ url_for('index') }}">Dashboard</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
